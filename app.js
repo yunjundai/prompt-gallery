@@ -372,17 +372,71 @@ function escapeHtml(str) {
 // ================================
 
 /**
- * 切換管理員模式
+ * 開啟登入彈窗
  */
-function toggleAdmin() {
-    state.isAdmin = !state.isAdmin
-    renderAdminToolbar()
-    renderGallery()
+function openLoginModal() {
+    document.getElementById('adminPassword').value = ''
+    document.getElementById('loginError').classList.add('hidden')
+    document.getElementById('loginModal').classList.add('active')
+    // 自動聚焦密碼輸入框
+    setTimeout(() => document.getElementById('adminPassword').focus(), 100)
+}
 
-    if (state.isAdmin) {
+/**
+ * 關閉登入彈窗
+ */
+function closeLoginModal() {
+    document.getElementById('loginModal').classList.remove('active')
+    document.getElementById('adminPassword').value = ''
+    document.getElementById('loginError').classList.add('hidden')
+}
+
+/**
+ * 嘗試登入
+ */
+function attemptLogin() {
+    const password = document.getElementById('adminPassword').value
+
+    if (password === GOOGLE_CONFIG.ADMIN_PASSWORD) {
+        // 密碼正確
+        state.isAdmin = true
+        closeLoginModal()
+        renderAdminToolbar()
+        renderGallery()
+        updateLoginButton()
         showToast('已啟用管理員模式', 'success')
     } else {
-        showToast('已退出管理員模式', 'info')
+        // 密碼錯誤
+        document.getElementById('loginError').classList.remove('hidden')
+        document.getElementById('adminPassword').value = ''
+        document.getElementById('adminPassword').focus()
+    }
+}
+
+/**
+ * 登出管理員
+ */
+function logoutAdmin() {
+    state.isAdmin = false
+    renderAdminToolbar()
+    renderGallery()
+    updateLoginButton()
+    showToast('已退出管理員模式', 'info')
+}
+
+/**
+ * 更新登入按鈕狀態
+ */
+function updateLoginButton() {
+    const signInBtn = document.getElementById('googleSignInBtn')
+    const signOutBtn = document.getElementById('signOutBtn')
+
+    if (state.isAdmin) {
+        signInBtn.classList.add('hidden')
+        signOutBtn.classList.remove('hidden')
+    } else {
+        signInBtn.classList.remove('hidden')
+        signOutBtn.classList.add('hidden')
     }
 }
 
@@ -397,6 +451,7 @@ function renderAdminToolbar() {
         toolbar.classList.add('hidden')
     }
 }
+
 
 // ================================
 // Modal 操作
@@ -744,14 +799,12 @@ function showToast(message, type = 'info') {
 // ================================
 
 function setupEventListeners() {
-    // 管理員按鈕（使用 Google 登入按鈕作為切換）
-    document.getElementById('googleSignInBtn').addEventListener('click', toggleAdmin)
-    document.getElementById('signOutBtn').addEventListener('click', () => {
-        state.isAdmin = false
-        renderAdminToolbar()
-        renderGallery()
-        showToast('已退出管理員模式', 'info')
-    })
+    // 登入按鈕 - 開啟密碼輸入彈窗
+    document.getElementById('googleSignInBtn').addEventListener('click', openLoginModal)
+
+    // 登出按鈕
+    document.getElementById('signOutBtn').addEventListener('click', logoutAdmin)
+
 
     // Modal 背景點擊關閉
     document.querySelectorAll('.modal').forEach(modal => {

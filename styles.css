@@ -767,7 +767,23 @@ body::before {
     text-align: center;
 }
 
+/* 登入錯誤訊息 */
+.login-error {
+    padding: var(--space-3);
+    margin-top: var(--space-3);
+    background: var(--danger-light);
+    color: var(--danger);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    text-align: center;
+}
+
+.login-error.hidden {
+    display: none;
+}
+
 /* ================================
+
    表單樣式
 ================================ */
 .form-group {

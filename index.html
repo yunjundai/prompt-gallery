@@ -54,9 +54,32 @@
         </div>
     </header>
 
-    <!-- 管理員登入彈窗（已移除，改用 Google OAuth） -->
+    <!-- 管理員登入彈窗 -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔐 管理員登入</h2>
+                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="adminPassword">請輸入管理員密碼</label>
+                    <input type="password" id="adminPassword" placeholder="輸入密碼..."
+                        onkeydown="if(event.key === 'Enter') attemptLogin()">
+                </div>
+                <div id="loginError" class="login-error hidden">
+                    密碼錯誤，請重試
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeLoginModal()">取消</button>
+                    <button class="btn btn-primary" onclick="attemptLogin()">登入</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- 新增/編輯彈窗 -->
+
     <div id="editModal" class="modal">
         <div class="modal-content modal-large">
             <div class="modal-header">
