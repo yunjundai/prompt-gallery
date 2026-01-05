@@ -472,7 +472,8 @@ body::before {
 }
 
 /* 卡片樣式 */
-.prompt-card {
+.prompt-card,
+.gallery-card {
     position: relative;
     background: var(--gradient-card);
     border: 1px solid var(--border-color);
@@ -481,18 +482,32 @@ body::before {
     transition: all var(--transition-normal);
 }
 
-.prompt-card:hover {
+.prompt-card:hover,
+.gallery-card:hover {
     transform: translateY(-4px);
     border-color: var(--border-hover);
     box-shadow: var(--shadow-xl);
 }
 
-.card-image-wrapper {
+.card-image-wrapper,
+.card-image {
     position: relative;
     aspect-ratio: 1;
     overflow: hidden;
     cursor: pointer;
 }
+
+/* 圖片樣式 - 確保圖片正確縮放 */
+.card-image img,
+.gallery-card img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+
 
 .card-image {
     width: 100%;
