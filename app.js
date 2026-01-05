@@ -394,24 +394,47 @@ function closeLoginModal() {
 /**
  * 嘗試登入
  */
-function attemptLogin() {
+async function attemptLogin() {
     const password = document.getElementById('adminPassword').value
+    const loginBtn = document.querySelector('#loginModal .btn-primary')
 
-    if (password === GOOGLE_CONFIG.ADMIN_PASSWORD) {
-        // 密碼正確
-        state.isAdmin = true
-        closeLoginModal()
-        renderAdminToolbar()
-        renderGallery()
-        updateLoginButton()
-        showToast('已啟用管理員模式', 'success')
-    } else {
-        // 密碼錯誤
+    if (!password) {
         document.getElementById('loginError').classList.remove('hidden')
-        document.getElementById('adminPassword').value = ''
-        document.getElementById('adminPassword').focus()
+        return
+    }
+
+    // 禁用按鈕防止重複點擊
+    loginBtn.disabled = true
+    loginBtn.textContent = '驗證中...'
+
+    try {
+        // 調用後端 API 驗證密碼
+        const result = await gasPost('verifyPassword', { password })
+
+        if (result.success) {
+            // 密碼正確
+            state.isAdmin = true
+            closeLoginModal()
+            renderAdminToolbar()
+            renderGallery()
+            updateLoginButton()
+            showToast('已啟用管理員模式', 'success')
+        } else {
+            // 密碼錯誤
+            document.getElementById('loginError').classList.remove('hidden')
+            document.getElementById('adminPassword').value = ''
+            document.getElementById('adminPassword').focus()
+        }
+    } catch (error) {
+        console.error('登入驗證失敗:', error)
+        showToast('驗證失敗，請稍後再試', 'error')
+    } finally {
+        // 恢復按鈕狀態
+        loginBtn.disabled = false
+        loginBtn.textContent = '登入'
     }
 }
+
 
 /**
  * 登出管理員
