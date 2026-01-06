@@ -5,7 +5,7 @@
 
 const GOOGLE_CONFIG = {
     // Google Apps Script Web App URL
-    GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbwfLd0neSG2bmP7Xd1C3KaNd4ehCkzq5-sJ8f7BaYsmWKgXYUVilRL47hHvurffMi1hYA/exec',
+    GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbw075bXIKE8TBzGfHfJzPwUbgUyicFJ_tz9KxU3zOoBV9mc6lOuH6dR31A8sidSHSbZzQ/exec',
 
     // 保留原有設定供參考
     SPREADSHEET_ID: '1OVl6BFpWfzsauR1djpOaO-PtraVhThPfgVzqD3-f3DI',
